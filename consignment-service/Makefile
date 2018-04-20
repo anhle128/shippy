@@ -4,4 +4,4 @@ build:
 	docker build -t consignment-service .
 
 run:
-	docker run -p 50051:50051 -e MICRO_SERVER_ADDRESS=:50051 -e MICRO_REGISTRY=mdns consignment-service
+	docker run -p 50051:50051 -e MICRO_SERVER_ADDRESS=:50051 -e MICRO_REGISTRY=mdns -e DB_HOST=mongodb://root:123456789@ds147659.mlab.com:47659/shippy consignment-service
