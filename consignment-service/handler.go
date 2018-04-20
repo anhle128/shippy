@@ -21,7 +21,8 @@ type handler struct {
 }
 
 func (s *handler) GetRepo() Repository {
-	return &ConsignmentRepository{s.session.Clone()}
+	// return ConsignmentRepository{s.session.Clone()}
+	return InitConsignmentRepository(s.session.Clone())
 }
 
 // CreateConsignment - we created just one method on our service,

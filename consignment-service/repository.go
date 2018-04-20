@@ -21,13 +21,19 @@ type ConsignmentRepository struct {
 	session *mgo.Session
 }
 
+func InitConsignmentRepository(session *mgo.Session) ConsignmentRepository {
+	return ConsignmentRepository{
+		session: session,
+	}
+}
+
 // Create a new consignment
-func (repo *ConsignmentRepository) Create(consignment *pb.Consignment) error {
+func (repo ConsignmentRepository) Create(consignment *pb.Consignment) error {
 	return repo.collection().Insert(consignment)
 }
 
 // GetAll consignments
-func (repo *ConsignmentRepository) GetAll() ([]*pb.Consignment, error) {
+func (repo ConsignmentRepository) GetAll() ([]*pb.Consignment, error) {
 	var consignments []*pb.Consignment
 	// Find normally takes a query, but as we want everything, we can nil this.
 	// We then bind our consignments variable by passing it as an argument to .All().
@@ -46,10 +52,10 @@ func (repo *ConsignmentRepository) GetAll() ([]*pb.Consignment, error) {
 // I.e this approach avoids locking and allows for requests to be processed concurrently. Nice!
 // But... it does mean we need to ensure each session is closed on completion. Otherwise
 // you'll likely build up loads of dud connections and hit a connection limit. Not nice!
-func (repo *ConsignmentRepository) Close() {
+func (repo ConsignmentRepository) Close() {
 	repo.session.Close()
 }
 
-func (repo *ConsignmentRepository) collection() *mgo.Collection {
+func (repo ConsignmentRepository) collection() *mgo.Collection {
 	return repo.session.DB(dbName).C(consignmentCollection)
 }
