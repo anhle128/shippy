@@ -3,6 +3,7 @@
 package main
 
 import (
+	"fmt"
 	"log"
 
 	pb "github.com/anhle128/shippy/consignment-service/proto/consignment"
@@ -37,6 +38,9 @@ func (s *handler) CreateConsignment(ctx context.Context, req *pb.Consignment, re
 		MaxWeight: req.Weight,
 		Capacity:  int32(len(req.Containers)),
 	})
+	if vesselResponse == nil {
+		return fmt.Errorf("does't have any vessel")
+	}
 	log.Printf("Found vessel: %s \n", vesselResponse.Vessel.Name)
 	if err != nil {
 		return err
